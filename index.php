@@ -59,22 +59,31 @@
                 <th>Sabado</th>                
             </tr>
             <tr>
-                <th></th>
-                <th></th>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>                
+                <td></td>
+                <td></td>
+                <td>1</td>
+                <td>2</td>
+                <td><a href="#">3</a>
+                    <small>
+                        <span class="badge bg-dark float-end">2 tareas</span>
+                        <ul>
+                            <li><a href="#"><i class="icon-pencil"></i>Clases</a></li>
+                            <li><a href="#"><i class="icon-cog"></i>Compras</a></li>
+                        </ul>
+                        <button class="btn btn-sm btn-success">Agregar Tarea</button>
+                    </small>
+                </td>
+                <td>4</td>
+                <td>5</td>                
             </tr>
             <tr>
-                <th>6</th>
-                <th>7</th>
-                <th>8</th>
-                <th>9</th>
-                <th>10</th>
-                <th>11</th>
-                <th>12</th>                
+                <td>6</td>
+                <td>7</td>
+                <td>8</td>
+                <td>9</td>
+                <td>10</td>
+                <td>11</td>
+                <td>12</td>                
             </tr>
         </table>
         <!--calendario-->
