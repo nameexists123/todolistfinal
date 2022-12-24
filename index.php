@@ -1,6 +1,18 @@
 <?php
-$month = date('m');
-$year = date('Y');
+
+$pattern="/[0-9]{2}-[0-9]{4}/";
+
+if(isset($_GET['month'])&&preg_match($pattern,$_GET['month']))
+{
+    $montharr=explode('-',$_GET['month']);
+    $month=$montharr[0];
+    $year=$montharr[1];
+}
+else
+{
+    $month = date('m');
+    $year = date('Y');
+}
 
 $firstday = strtotime($year . '-' . $month . '-1');
 $monthname = date('F', $firstday);
@@ -72,7 +84,7 @@ $nextday = 1;
             <div class="col-md-4">
                 <form class="form-control-lg" action="index.php" method="get">
                     <div class="input-group">
-                        <input class="form-control datepicker" type="text">
+                        <input name="month" class="form-control datepicker" type="text">
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary btn-sm">
                                 <i class="icon-search"></i>
