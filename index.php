@@ -1,10 +1,49 @@
+<?php
+$month = date('m');
+$year = date('Y');
+
+$firstday = strtotime($year . '-' . $month . '-1');
+$monthname = date('F', $firstday);
+$firstweekday = date('w', $firstday);
+
+$monthdays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+if($month==1)
+{
+    $prevmonth = 12;
+    $prevyear = $year - 1;   
+}
+else
+{
+    $prevmonth = $month - 1;
+    $prevyear = $year;
+}
+
+if ($month = 12) {
+    $nexmonth = 1;
+    $nextyear = $year + 1;
+} 
+else 
+{
+    $nexmonth = $month + 1;
+    $nextyear = $year;
+}
+
+$prevmonthdays = cal_days_in_month(CAL_GREGORIAN, $prevmonth, $prevyear);
+$startweekday = $prevmonthdays - $firstweekday + 1;
+$weekcount = 1;
+$daycount = 1;
+$nextday = 1;    
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ToDoList</title>
+    <title>ToDoList</title>    
+  </head>
     <style>
         @import url('css/bootstrap.css');
         @import url('css/fontello.css');
@@ -31,7 +70,7 @@
         <!-- formulario-->
         <div class="row">
             <div class="col-md-4">
-                <form action="">
+                <form class="form-control-lg" action="index.php" method="get">
                     <div class="input-group">
                         <input class="form-control datepicker" type="text">
                         <div class="input-group-append">
@@ -43,7 +82,7 @@
                 </form>
             </div> 
             <div class="col-md-8">
-                <h4 class="float-end">Marzo 2019</h4>
+                <h4 class="float-end"><?="$monthname $year"?></h4>
             </div>        
         </div>        
         <!--formulario-->
@@ -59,31 +98,29 @@
                 <th>Sabado</th>                
             </tr>
             <tr>
-                <td></td>
-                <td></td>
-                <td>1</td>
-                <td>2</td>
-                <td><a href="#">3</a>
-                    <small>
-                        <span class="badge bg-dark float-end">2 tareas</span>
-                        <ul>
-                            <li><a href="#"><i class="icon-pencil"></i>Clases</a></li>
-                            <li><a href="#"><i class="icon-cog"></i>Compras</a></li>
-                        </ul>
-                        <button class="btn btn-sm btn-success">Agregar Tarea</button>
-                    </small>
-                </td>
-                <td>4</td>
-                <td>5</td>                
-            </tr>
-            <tr>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
-                <td>9</td>
-                <td>10</td>
-                <td>11</td>
-                <td>12</td>                
+                <?php
+                while($firstweekday>0)
+                {
+                    echo '<td class="text-muted">' . $startweekday++ . '</td>';
+                    $firstweekday--;
+                    $weekcount++;
+                }               
+                while($daycount<=$monthdays)
+                {
+                    echo '<td>' . $daycount++ . '</td>';
+                    $weekcount++;
+                    if($weekcount>7)
+                    {
+                        echo'</tr><tr>';
+                        $weekcount = 1;
+                    }
+                }
+                while($weekcount>1 && $weekcount<=7)
+                {
+                    echo '<td class="text-muted">' . $nextday++ . '</td>';
+                    $weekcount++;
+                }
+                ?>
             </tr>
         </table>
         <!--calendario-->
