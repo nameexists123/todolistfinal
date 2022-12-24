@@ -134,21 +134,45 @@ $nextday = 1;
     </div>
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
+        <form action="">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="icon-calendar">
+            Agregar nueva tarea
+        </i></h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
+        <!-- <span aria-hidden="true">&times;</span> -->
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="form-group">
+            
+             <input class="form-control" type="text" name="date" placeholder="Fecha">
+             
+        </div>
+        <div class="form-group">
+             <input class="form-control" type="time" name="time" placeholder="Time">
+        </div>
+        <div class="form-group">
+            Categoria
+            <select class="form-control" name="categoria" id="">
+            <option value="1">Educacion</option>
+        </select>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="name" placeholder="Nombre de la tarea">
+        </div>
+       
+       
+        
+        
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary">Agregar </button>
       </div>
+        </form>
     </div>
   </div>
 </div>
