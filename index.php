@@ -148,13 +148,13 @@ $nextday = 1;
     <div class="modal fade" id="newEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <form action="">
+                <form action="new.php"method="post">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="icon-calendar">
                                 Agregar nueva tarea
                             </i></h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <!-- <span aria-hidden="true">&times;</span> -->
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
@@ -162,7 +162,7 @@ $nextday = 1;
                             <input type="text" class="form-control input-date" name="date" placeholder="Fecha">
                         </div>
                         <div class="form-group">
-                            <input class="form-control" type="time" name="time" placeholder="Time">
+                            <input class="form-control" type="time" name="time" placeholder="Hora">
                         </div>
                         <div class="form-group">
                             Categoria
@@ -184,7 +184,7 @@ $nextday = 1;
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Agregar </button>
+                        <button type="submit" class="btn btn-primary">Agregar </button>
                     </div>
                 </form>
             </div>
