@@ -1,4 +1,14 @@
 <?php
+require 'mysqli.php';
+
+$query = 'SELECT * FROM categorias';
+$rs_categorias = $mysqli->query($query) or die($mysqli->error);
+$categorias = array();
+while ($row = $rs_categorias->fetch_object()) {
+    $categorias[] = $row;
+}
+$rs_categorias->free();
+$mysqli->close();
 
 $pattern = "/[0-9]{2}-[0-9]{4}/";
 
@@ -57,10 +67,11 @@ $nextday = 1;
 </style>
 
 <script src="js/jquery-3.6.3.min.js"></script>
-<script src="js/bootstrap.js"></script> 
+<script src="js/bootstrap.js"></script>
 <script src="js/bootstrap-datepicker.js"></script>
+
+
 <script>
-    
     $(function() {
         $('.datepicker').datepicker({
             format: "mm-yyyy",
@@ -68,8 +79,9 @@ $nextday = 1;
             minViewMode: 1
         });
 
-        $('.btn-dark').on('click', function(){
-          $('#exampleModal').modal('show');
+        $('.btn-dark').on('click', function() {
+            $('#newEventModal .input-date').val($(this).data('date'));
+            $('#newEventModal').modal('show');
         });
     });
 </script>
@@ -132,49 +144,52 @@ $nextday = 1;
         </table>
         <!--calendario-->
     </div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-        <form action="">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="icon-calendar">
-            Agregar nueva tarea
-        </i></h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-        <!-- <span aria-hidden="true">&times;</span> -->
-        </button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-            
-             <input class="form-control" type="text" name="date" placeholder="Fecha">
-             
+    <!-- Modal -->
+    <div class="modal fade" id="newEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <form action="">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="icon-calendar">
+                                Agregar nueva tarea
+                            </i></h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <!-- <span aria-hidden="true">&times;</span> -->
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="text" class="form-control input-date" name="date" placeholder="Fecha">
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="time" name="time" placeholder="Time">
+                        </div>
+                        <div class="form-group">
+                            Categoria
+                            <?php if(count($categorias) > 0): ?>
+                                <select class="form-control" name="categorias">
+                                    <?php foreach ($categorias as $cat) : ?>
+                                        <option value="<?= $cat->id ?>">
+                                        <?= $cat->nombre ?></option>
+                                    <?php endforeach ?>
+                                </select>
+                            <?php
+                            else : ?>
+                                <div class="alert alert-warning">No categorias </div>
+                            <?php endif ?>
+                        </div>
+                        <div class="form-group">
+                            <input class="form-control" type="text" name="name" placeholder="Nombre de la tarea">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Agregar </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-             <input class="form-control" type="time" name="time" placeholder="Time">
-        </div>
-        <div class="form-group">
-            Categoria
-            <select class="form-control" name="categoria" id="">
-            <option value="1">Educacion</option>
-        </select>
-        </div>
-        <div class="form-group">
-            <input class="form-control" type="text" name="name" placeholder="Nombre de la tarea">
-        </div>
-       
-       
-        
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary">Agregar </button>
-      </div>
-        </form>
     </div>
-  </div>
-</div>
 </body>
+
 </html>
