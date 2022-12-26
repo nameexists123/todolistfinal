@@ -16,7 +16,7 @@
 
     $mysqli->query($query)or die($mysqli->error);
 
-    $url= date('m-Y',strtotime($date.' '.$time));
+    $url= date('m-Y',strtotime($date.''.$time));
     
     header('Location: index.php?month='.$url);
     ?>

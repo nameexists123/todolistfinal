@@ -115,9 +115,7 @@ $mysqli->close();
 </head>
 
 <body>
-    <pre>
-        <?php print_r($events)?>
-    </pre>
+    
     <div class="container">
         <h3><i class="icon-calendar"></i>To Do List</h3>
         <!-- formulario-->
@@ -158,7 +156,19 @@ $mysqli->close();
                     $weekcount++;
                 }
                 while ($daycount <= $monthdays) {
-                    echo '<td><butoon data-date="' . $year . '-' . $month . '-' . $daycount . '" class="btn btn-sm btn-dark">' . $daycount++ . '</butoon></td>';
+                    echo '<td><butoon data-date="' . $year . '-' . $month . '-' . $daycount . '" class="btn btn-sm btn-dark">';
+                    echo $daycount++;
+                    echo '</butoon>';
+                    $index =str_pad($daycount, 2, '0', STR_PAD_LEFT) . $month .$year;
+                    if (isset($events[$index])) {
+                        echo'<ul>';
+                        foreach($events[$index]as $event){
+                            echo '<li>'.$event->name . '</li>';
+                        }
+                        echo'</ul>';
+                    }
+                    echo '</td>';
+                    $daycount++;
                     $weekcount++;
                     if ($weekcount > 7) {
                         echo '</tr><tr>';
