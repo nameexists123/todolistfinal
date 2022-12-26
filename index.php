@@ -1,14 +1,15 @@
 <?php
 require 'mysqli.php';
 
-$query = 'SELECT * FROM categorias';
-$rs_categorias = $mysqli->query($query) or die($mysqli->error);
-$categorias = array();
-while ($row = $rs_categorias->fetch_object()) {
-    $categorias[] = $row;
+$query = 'SELECT * FROM categories';
+$rs_categories = $mysqli->query($query) or die($mysqli->error);
+$categories = array();
+while ($row = $rs_categories->fetch_object()) {
+    $categories[] = $row;
 }
-$rs_categorias->free();
-$mysqli->close();
+$rs_categories->free();
+
+
 
 $pattern = "/[0-9]{2}-[0-9]{4}/";
 
@@ -26,6 +27,11 @@ $monthname = date('F', $firstday);
 $firstweekday = date('w', $firstday);
 
 $monthdays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+
+$lastday =strtotime($year.'-'.$month.'-'.$monthdays);
+
+$from = date('Y-m-d',$firstday);
+$to = date('Y-m-d',$lastday); 
 
 if ($month == 1) {
     $prevmonth = 12;
@@ -48,7 +54,28 @@ $startweekday = $prevmonthdays - $firstweekday + 1;
 $weekcount = 1;
 $daycount = 1;
 $nextday = 1;
+ 
+$eventsQuery = "SELECT
+                     DATE_FORMAT( date,'%d%m%Y') AS  arr_index,
+                     events.name, 
+                     categories.name as category,
+                     icon,
+                     date
+                FROM 
+                     events,categories
+                WHERE 
+  categories.id= cat
+  AND
+   date BETWEEN '$from' AND '$to'
+   ORDER BY 
+   date";
+   $rsEvents =$mysqli->query($eventsQuery)or die($mysqli->error);
+   $events = array();
 
+   while ($row = $rsEvents->fetch_object()) {
+    $events[$row->arr_index][]=$row;
+   }
+$mysqli->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -88,6 +115,9 @@ $nextday = 1;
 </head>
 
 <body>
+    <pre>
+        <?php print_r($events)?>
+    </pre>
     <div class="container">
         <h3><i class="icon-calendar"></i>To Do List</h3>
         <!-- formulario-->
@@ -166,11 +196,11 @@ $nextday = 1;
                         </div>
                         <div class="form-group">
                             Categoria
-                            <?php if(count($categorias) > 0): ?>
-                                <select class="form-control" name="categorias">
-                                    <?php foreach ($categorias as $cat) : ?>
+                            <?php if(count($categories) > 0): ?>
+                                <select class="form-control" name="category">
+                                    <?php foreach ($categories as $cat) : ?>
                                         <option value="<?= $cat->id ?>">
-                                        <?= $cat->nombre ?></option>
+                                        <?= $cat->name ?></option>
                                     <?php endforeach ?>
                                 </select>
                             <?php
