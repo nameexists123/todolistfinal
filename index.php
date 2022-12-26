@@ -28,10 +28,10 @@ $firstweekday = date('w', $firstday);
 
 $monthdays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
-$lastday =strtotime($year.'-'.$month.'-'.$monthdays);
+$lastday = strtotime($year . '-' . $month . '-' . $monthdays);
 
-$from = date('Y-m-d',$firstday);
-$to = date('Y-m-d',$lastday); 
+$from = date('Y-m-d', $firstday);
+$to = date('Y-m-d', $lastday);
 
 if ($month == 1) {
     $prevmonth = 12;
@@ -54,27 +54,26 @@ $startweekday = $prevmonthdays - $firstweekday + 1;
 $weekcount = 1;
 $daycount = 1;
 $nextday = 1;
- 
-$eventsQuery = "SELECT
-                     DATE_FORMAT( date,'%d%m%Y') AS  arr_index,
+
+$eventsQuery = "SELECT DATE_FORMAT( date,'%d%m%Y') AS  arr_index,
                      events.name, 
                      categories.name as category,
                      icon,
                      date
                 FROM 
-                     events,categories
+                     events , categories
                 WHERE 
-  categories.id= cat
+  categories.id=cat
   AND
-   date BETWEEN '$from' AND '$to'
+   date BETWEEN '$from'AND'$to'
    ORDER BY 
    date";
-   $rsEvents =$mysqli->query($eventsQuery)or die($mysqli->error);
-   $events = array();
+$rsEvents = $mysqli->query($eventsQuery) or die($mysqli->error);
+$events = array();
 
-   while ($row = $rsEvents->fetch_object()) {
+while($row = $rsEvents->fetch_object()){
     $events[$row->arr_index][]=$row;
-   }
+}
 $mysqli->close();
 ?>
 <!DOCTYPE html>
@@ -115,7 +114,7 @@ $mysqli->close();
 </head>
 
 <body>
-    
+   
     <div class="container">
         <h3><i class="icon-calendar"></i>To Do List</h3>
         <!-- formulario-->
@@ -154,27 +153,34 @@ $mysqli->close();
                     echo '<td class="text-muted">' . $startweekday++ . '</td>';
                     $firstweekday--;
                     $weekcount++;
+                    
                 }
-                while ($daycount <= $monthdays) {
-                    echo '<td><butoon data-date="' . $year . '-' . $month . '-' . $daycount . '" class="btn btn-sm btn-dark">';
-                    echo $daycount++;
+                while ($daycount<= $monthdays) {
+                    echo '<td><butoon data-date=" ' .$year. '-' . $month .'-'. $daycount .' " class="btn btn-sm btn-dark">';
+                    echo  $daycount++;
                     echo '</butoon>';
-                    $index =str_pad($daycount, 2, '0', STR_PAD_LEFT) . $month .$year;
+                    $index=str_pad($daycount-1,  2,'0', STR_PAD_LEFT).$month.$year;
+
                     if (isset($events[$index])) {
-                        echo'<ul>';
-                        foreach($events[$index]as $event){
-                            echo '<li>'.$event->name . '</li>';
+                        echo '<small>';
+                        echo '<span class="badge bg-dark float-end">'.count($events[$index]).' Events</span>';
+                        echo '<ul>';
+                        foreach($events[$index]as$event){
+                            echo'<li>'.$event->name.'</li>';
                         }
-                        echo'</ul>';
+                        echo '</ul></small>';
                     }
                     echo '</td>';
-                    $daycount++;
+                     
                     $weekcount++;
+                    
                     if ($weekcount > 7) {
                         echo '</tr><tr>';
                         $weekcount = 1;
-                    }
+                    };
                 }
+
+
                 while ($weekcount > 1 && $weekcount <= 7) {
                     echo '<td class="text-muted">' . $nextday++ . '</td>';
                     $weekcount++;
@@ -185,32 +191,32 @@ $mysqli->close();
         <!--calendario-->
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="newEventModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="newEventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered"role="document">
             <div class="modal-content">
-                <form action="new.php"method="post">
+                <form action="new.php" method="post">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel"><i class="icon-calendar">
+                        <h5 class="modal-title" id="exampleModalLabel"><i class="icon-calendar">
                                 Agregar nueva tarea
-                            </i></h1>
+                            </i></h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" class="form-control input-date" name="date" placeholder="Fecha">
+                            <input type="text" class="form-control input-date" name="date" placeholder="date">
                         </div>
                         <div class="form-group">
                             <input class="form-control" type="time" name="time" placeholder="Hora">
                         </div>
                         <div class="form-group">
                             Categoria
-                            <?php if(count($categories) > 0): ?>
+                            <?php if (count($categories) > 0) : ?>
                                 <select class="form-control" name="category">
-                                    <?php foreach ($categories as $cat) : ?>
+                                    <?php foreach($categories as $cat) : ?>
                                         <option value="<?= $cat->id ?>">
-                                        <?= $cat->name ?></option>
+                                            <?= $cat->name ?></option>
                                     <?php endforeach ?>
                                 </select>
                             <?php
